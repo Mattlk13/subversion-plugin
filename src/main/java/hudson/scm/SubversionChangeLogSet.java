@@ -40,11 +40,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+
 import jenkins.triggers.SCMTriggerItem;
 
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 import org.tmatesoft.svn.core.internal.util.SVNDate;
@@ -306,7 +306,7 @@ public final class SubversionChangeLogSet extends ChangeLogSet<LogEntry> {
         }
 
         @Exported
-        public String getUser() {// digester wants read/write property, even though it never reads. Duh.
+        public String getUser() {
             return author!=null ? author.getDisplayName() : "unknown";
         }
 
@@ -373,13 +373,13 @@ public final class SubversionChangeLogSet extends ChangeLogSet<LogEntry> {
             if (revision != that.revision) {
                 return false;
             }
-            if (author != null ? !author.equals(that.author) : that.author != null) {
+            if (!Objects.equals(author, that.author)) {
                 return false;
             }
-            if (date != null ? !date.equals(that.date) : that.date != null) {
+            if (!Objects.equals(date, that.date)) {
                 return false;
             }
-            if (msg != null ? !msg.equals(that.msg) : that.msg != null) {
+            if (!Objects.equals(msg, that.msg)) {
                 return false;
             }
 
@@ -437,7 +437,7 @@ public final class SubversionChangeLogSet extends ChangeLogSet<LogEntry> {
         }
 
         /**
-         * Path in the repository. Such as <tt>/test/trunk/foo.c</tt>
+         * Path in the repository. Such as <code>/test/trunk/foo.c</code>
          */
         @Exported(name="file")
         public String getValue() {
@@ -458,8 +458,7 @@ public final class SubversionChangeLogSet extends ChangeLogSet<LogEntry> {
 	          return localPath;
         }
 
-        @Restricted(NoExternalUse.class)
-        public void setLocalPath(String path) {
+        void setLocalPath(String path) {
             this.localPath = path;
         }
 
